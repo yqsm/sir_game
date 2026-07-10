@@ -176,7 +176,7 @@ export function determineEnding(flags, choices, miniChoices, discoveredItems) {
     phoneAnswered, computerChecked, reportRead, doorOpened,
   } = choices;
 
-  const { tapePlayed } = miniChoices;
+  const { tapePlayed, mintEaten, sleepPillsCounted, rivalArchiveRead } = miniChoices;
 
   // 检查彩蛋条件
   const hasMouseEars = flags.foundMouseEars;
@@ -189,6 +189,7 @@ export function determineEnding(flags, choices, miniChoices, discoveredItems) {
   }
 
   // 1. 你的杀人手法里没有对我的爱
+  //    主动挖掘真相：播放了录音带 + 深挖电脑 + 读完了报告 → 开门迎向陷阱
   if (foundSurveillance && tapePlayed &&
       foundIdentity && computerChecked === 'lookCloser' &&
       reportRead === 'readAll' &&
@@ -197,21 +198,30 @@ export function determineEnding(flags, choices, miniChoices, discoveredItems) {
   }
 
   // 2. 浩园之下
+  //    找到了归属 + 信任 + 身份认同 → 接电话 + 开门 → 接受命运
+  //    还必须：拿起警官证面对身份问题 + 关掉电脑（不深挖，选择接受而非追查）
+  //    还必须：数过安眠药（直面过自己的脆弱和极限）
   if (foundBelonging && foundTrust && foundIdentity &&
+      miniChoices.badgePickedUp === true &&
+      computerChecked === 'close' &&
       phoneAnswered === 'answer' &&
-      doorOpened === 'open') {
+      doorOpened === 'open' &&
+      sleepPillsCounted) {
     return ENDINGS.UNDER_VAST_SKY;
   }
 
-  // 3. 芬梨道上 —— 找到了爱的证据，选择不回应，安静离开
+  // 3. 芬梨道上
+  //    找到了领带（亲密）+ 薄荷糖（温柔）→ 不接 + 不出声 → 安静离开
+  //    还必须：吃了那颗薄荷糖（选择了接受这份温柔）
   if (foundIntimacy && foundTenderness &&
       phoneAnswered === 'ignore' &&
-      doorOpened === 'staySilent') {
+      doorOpened === 'staySilent' &&
+      mintEaten) {
     return ENDINGS.FENLI_ROAD;
   }
 
-  // 4. 斯德哥尔摩情人 —— 找到了控制/权力的证据，选择留下
-  // fallback：不满足以上任何条件时默认进入
+  // 4. 斯德哥尔摩情人（fallback）
+  //    不满足以上任何条件时默认进入
   return ENDINGS.STOCKHOLM_LOVER;
 }
 
