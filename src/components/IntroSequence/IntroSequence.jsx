@@ -2,13 +2,19 @@ import React from 'react';
 import { useGame } from '../../state/GameContext';
 import { ACTIONS } from '../../state/reducer';
 import { SCENES } from '../../game/constants';
+import { startRain } from '../../utils/audio';
 import './IntroSequence.css';
 
 export default function IntroSequence() {
   const { dispatch } = useGame();
 
+  const handleEnter = () => {
+    startRain();
+    dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.ROOM });
+  };
+
   return (
-    <div className="intro-screen" onClick={() => dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.ROOM })}>
+    <div className="intro-screen" onClick={handleEnter}>
       <div className="intro-text">
         <p>雨水顺着窗户滑下来。他站在门外，钥匙在手里攥了很久。</p>
         <p>三个月了。杨锦荣的办公室一直空着。没有人来收拾。没有人敢。</p>

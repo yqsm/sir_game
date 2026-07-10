@@ -4,6 +4,7 @@ import { ACTIONS } from '../../state/reducer';
 import { ITEMS } from '../../game/items';
 import { SCENES, DECISION_TRIGGERS } from '../../game/constants';
 import { determineEnding, checkAllMainEndingsUnlocked, checkCreatorItems } from '../../game/endings';
+import { setRainIntensity } from '../../utils/audio';
 import RoomItem from './RoomItem';
 import InventoryBar from '../InventoryBar/InventoryBar';
 import './Room.css';
@@ -14,6 +15,9 @@ export default function Room() {
     atmospherePhase, discoveredItems, flags, miniChoices,
     triggeredDecisions, choices, scene,
   } = state;
+
+  // 🌧️ 雨声随氛围变化
+  useEffect(() => { setRainIntensity(atmospherePhase); }, [atmospherePhase]);
 
   // 抉择触发逻辑（电话和敲门独立触发，互不阻塞）
   useEffect(() => {
