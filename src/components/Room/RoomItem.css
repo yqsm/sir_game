@@ -1,0 +1,62 @@
+.room-item {
+  position: absolute;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+/* 未发现：微弱的光晕提示 */
+.room-item.undiscovered .item-hitbox {
+  background: transparent;
+  transition: all 0.4s ease;
+}
+.room-item.undiscovered:hover .item-hitbox {
+  background: rgba(196, 164, 90, 0.08);
+  box-shadow: 0 0 15px rgba(196, 164, 90, 0.25),
+              inset 0 0 10px rgba(196, 164, 90, 0.05);
+}
+
+/* 已发现：淡淡的金色微光 */
+.room-item.discovered .item-hitbox {
+  background: rgba(196, 164, 90, 0.04);
+  box-shadow: 0 0 6px rgba(196, 164, 90, 0.1);
+}
+
+/* 悬停提示 */
+.item-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 14, 20, 0.92);
+  border: 1px solid rgba(196, 164, 90, 0.3);
+  color: #d4c8c0;
+  padding: 4px 10px;
+  font-size: 13px;
+  font-family: var(--font-sans);
+  white-space: nowrap;
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.room-item:hover .item-tooltip {
+  opacity: 1;
+}
+
+/* 点击反馈 */
+.room-item:active .item-hitbox {
+  transform: scale(0.97);
+  transition: transform 0.1s ease;
+}
+
+/* 不可交互（锁定状态） */
+.room-item.locked {
+  cursor: not-allowed;
+  opacity: 0.3;
+  filter: grayscale(0.5);
+}
+.room-item.locked:hover .item-tooltip {
+  opacity: 0.7;
+}

@@ -1,0 +1,50 @@
+.mini-choice-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(8, 4, 10, 0.85);
+  backdrop-filter: blur(4px);
+  animation: fadeIn 0.3s ease;
+}
+
+.mini-choice-card {
+  max-width: 500px;
+  width: 80%;
+  padding: 36px 32px;
+  background: rgba(20, 14, 20, 0.6);
+  border: 1px solid rgba(196, 164, 90, 0.2);
+  text-align: center;
+}
+
+.mini-choice-prompt {
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--text-primary);
+  margin-bottom: 28px;
+}
+
+.mini-choice-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.mini-choice-btn {
+  padding: 10px 28px;
+  font-size: 15px;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background: rgba(196, 164, 90, 0.1);
+  border: 1px solid rgba(196, 164, 90, 0.3);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.mini-choice-btn:hover {
+  background: rgba(196, 164, 90, 0.2);
+  border-color: rgba(196, 164, 90, 0.5);
+}

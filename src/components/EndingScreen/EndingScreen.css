@@ -1,0 +1,74 @@
+.ending-screen {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-y: auto;
+  padding: 60px 24px;
+  z-index: 100;
+}
+
+.ending-content {
+  max-width: 640px;
+  width: 100%;
+}
+
+/* 标题阶段 */
+.ending-title-text {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 2;
+  text-align: center;
+  color: var(--accent-gold);
+}
+
+/* 正文阶段 */
+.ending-body-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  margin-bottom: 6px;
+}
+
+.ending-body-subtitle {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  margin-bottom: 32px;
+}
+
+.ending-paragraphs p {
+  font-size: 16px;
+  line-height: 2.2;
+  color: var(--text-primary);
+  margin-bottom: 20px;
+}
+
+.ending-fin {
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-dim);
+  margin: 36px 0;
+  letter-spacing: 4px;
+}
+
+.ending-replay-btn {
+  display: block;
+  margin: 0 auto;
+  padding: 12px 40px;
+  font-size: 15px;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background: rgba(196, 164, 90, 0.1);
+  border: 1px solid rgba(196, 164, 90, 0.3);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.ending-replay-btn:hover {
+  background: rgba(196, 164, 90, 0.2);
+  border-color: rgba(196, 164, 90, 0.5);
+}

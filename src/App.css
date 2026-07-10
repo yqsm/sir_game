@@ -1,0 +1,99 @@
+/* === 字体引入 === */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&display=swap');
+
+/* === 全局 CSS 变量 — 暗色调 noir 色板 === */
+:root {
+  --bg-black: #0d0a0f;
+  --bg-dark: #1a1218;
+  --bg-mid: #241d26;
+  --bg-light: #2e2630;
+  --text-primary: #d4c8c0;
+  --text-secondary: #9e9298;
+  --text-dim: #6e6268;
+  --accent-gold: #c4a45a;
+  --accent-gold-dim: #8a7040;
+  --accent-warm: #b5754b;
+  --accent-cool: #6b8a9e;
+  --shadow-deep: rgba(0, 0, 0, 0.7);
+  --shadow-mid: rgba(0, 0, 0, 0.4);
+  --font-serif: 'Noto Serif SC', 'SimSun', 'Songti SC', serif;
+  --font-sans: 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', sans-serif;
+  --transition-slow: 1.5s ease;
+  --transition-mid: 0.6s ease;
+  --transition-fast: 0.3s ease;
+}
+
+/* === Reset === */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-black);
+  color: var(--text-primary);
+  font-family: var(--font-serif);
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+/* === 场景过渡 === */
+.app.fadeBlack {
+  animation: fadeToBlack 1.5s ease forwards;
+}
+
+.app.fadeIn {
+  animation: fadeFromBlack 1.5s ease forwards;
+}
+
+@keyframes fadeToBlack {
+  to { filter: brightness(0); }
+}
+
+@keyframes fadeFromBlack {
+  from { filter: brightness(0); }
+  to { filter: brightness(1); }
+}
+
+/* === 通用按钮 === */
+button {
+  font-family: var(--font-sans);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all var(--transition-fast);
+}
+
+button:hover {
+  opacity: 0.85;
+}
+
+/* === 滚动条 === */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--bg-light);
+  border-radius: 2px;
+}
+
+/* === 闪电动画 === */
+@keyframes lightning {
+  0%, 93%, 96%, 100% { opacity: 0; }
+  94% { opacity: 1; }
+  95% { opacity: 0.3; }
+}

@@ -1,0 +1,67 @@
+.memory-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.4s ease;
+}
+
+.memory-bg {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 4, 10, 0.88);
+  backdrop-filter: blur(6px);
+}
+
+.memory-card {
+  position: relative;
+  max-width: 600px;
+  width: 85%;
+  padding: 40px 36px;
+  border-left: 1px solid var(--accent-gold-dim);
+  background: rgba(20, 14, 20, 0.5);
+}
+
+.memory-label {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--accent-gold);
+  letter-spacing: 2px;
+  margin-bottom: 24px;
+  text-transform: uppercase;
+}
+
+.memory-text {
+  font-size: 17px;
+  line-height: 2;
+  color: var(--text-primary);
+  min-height: 40px;
+}
+
+.memory-hint {
+  margin-top: 28px;
+  font-size: 13px;
+  color: var(--text-dim);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.cursor-blink {
+  animation: blink 0.8s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}

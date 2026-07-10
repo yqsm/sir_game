@@ -1,0 +1,30 @@
+.intro-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-black);
+  cursor: pointer;
+  animation: fadeIn 1.5s ease;
+}
+
+.intro-text {
+  max-width: 560px;
+  padding: 40px;
+  text-align: center;
+}
+
+.intro-text p {
+  font-size: 17px;
+  line-height: 2.2;
+  color: var(--text-primary);
+  margin-bottom: 24px;
+}
+
+.intro-hint {
+  font-size: 13px !important;
+  color: var(--text-dim) !important;
+  margin-top: 40px !important;
+  animation: pulse 2s ease-in-out infinite;
+}

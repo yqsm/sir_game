@@ -1,0 +1,68 @@
+.title-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-black);
+}
+
+.title-content {
+  text-align: center;
+}
+
+.title-main {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--accent-gold);
+  letter-spacing: 8px;
+  margin-bottom: 12px;
+}
+
+.title-sub {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-family: var(--font-sans);
+  letter-spacing: 3px;
+  margin-bottom: 48px;
+}
+
+.title-btn {
+  display: block;
+  margin: 0 auto 10px;
+  padding: 12px 48px;
+  font-size: 16px;
+  font-family: var(--font-sans);
+  color: var(--text-primary);
+  background: transparent;
+  border: 1px solid rgba(196, 164, 90, 0.4);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+.title-btn:hover {
+  background: rgba(196, 164, 90, 0.12);
+  border-color: rgba(196, 164, 90, 0.7);
+}
+
+.title-btn-hidden {
+  border-color: rgba(196, 164, 90, 0.2);
+  color: var(--text-dim);
+  font-size: 14px;
+  margin-top: 24px;
+}
+
+.title-progress {
+  position: absolute;
+  bottom: 40px;
+  display: flex;
+  gap: 8px;
+  font-size: 18px;
+  color: var(--text-dim);
+}
+
+.progress-dot.filled {
+  color: var(--accent-gold);
+}

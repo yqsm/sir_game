@@ -1,0 +1,298 @@
+/* === 房间容器 === */
+.room-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: default;
+}
+
+/* === CSS 绘制的房间背景 === */
+.room-bg {
+  position: absolute;
+  inset: 0;
+  /* 后墙 */
+  background:
+    /* 天花板 */
+    linear-gradient(180deg,
+      #0f0b12 0%,
+      #1a121c 15%,
+      #1a121c 100%
+    ),
+    /* 地板 */
+    linear-gradient(180deg,
+      transparent 78%,
+      #2a1f28 78%,
+      #241b22 100%
+    ),
+    /* 左墙阴影 */
+    linear-gradient(90deg,
+      rgba(0,0,0,0.4) 0%,
+      transparent 25%
+    ),
+    /* 右墙阴影 */
+    linear-gradient(270deg,
+      rgba(0,0,0,0.5) 0%,
+      transparent 30%
+    ),
+    #1a121c;
+}
+
+/* === 窗户 === */
+.room-window {
+  position: absolute;
+  left: 7%;
+  top: 5%;
+  width: 14%;
+  height: 28%;
+  background:
+    linear-gradient(180deg,
+      rgba(60,80,100,0.3) 0%,
+      rgba(40,60,80,0.4) 100%
+    ),
+    #0a0f14;
+  border: 2px solid #3a2f38;
+  border-radius: 2px;
+  box-shadow:
+    inset 0 0 30px rgba(20,40,70,0.3),
+    0 0 1px rgba(100,120,140,0.2);
+}
+
+.room-window::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    180deg,
+    transparent 0px,
+    transparent 2px,
+    rgba(100,140,180,0.08) 2px,
+    rgba(100,140,180,0.15) 4px
+  );
+  animation: windowRain 0.6s linear infinite;
+}
+
+@keyframes windowRain {
+  from { transform: translateY(-5px); }
+  to { transform: translateY(5px); }
+}
+
+/* === 百叶窗 === */
+.room-blinds {
+  position: absolute;
+  left: 7%;
+  top: 5%;
+  width: 14%;
+  height: 28%;
+  background: repeating-linear-gradient(
+    0deg,
+    #2a222e 0px,
+    #2a222e 3px,
+    transparent 3px,
+    transparent 12px
+  );
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* === 书桌 === */
+.room-desk {
+  position: absolute;
+  left: 12%;
+  top: 56%;
+  width: 25%;
+  height: 3%;
+  background: linear-gradient(180deg, #3a2f35 0%, #2e242c 100%);
+  border-radius: 2px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+/* 书桌腿 */
+.room-desk::before {
+  content: '';
+  position: absolute;
+  left: 10%;
+  bottom: -30px;
+  width: 3px;
+  height: 30px;
+  background: #2e242c;
+}
+.room-desk::after {
+  content: '';
+  position: absolute;
+  right: 10%;
+  bottom: -30px;
+  width: 3px;
+  height: 30px;
+  background: #2e242c;
+}
+
+/* === 台灯 === */
+.room-lamp {
+  position: absolute;
+  left: 34%;
+  top: 50%;
+  width: 3%;
+  height: 6%;
+  background: linear-gradient(180deg, #5a4a3a 0%, #3a2f28 100%);
+  border-radius: 50% 50% 2px 2px;
+}
+.room-lamp::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -12px;
+  width: 32px;
+  height: 32px;
+  background: radial-gradient(circle, rgba(200,170,120,0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: lampGlow 3s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes lampGlow {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+
+/* === 书架 === */
+.room-bookshelf {
+  position: absolute;
+  right: 18%;
+  top: 8%;
+  width: 12%;
+  height: 32%;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 44px,
+      #2e242c 44px,
+      #2e242c 46px
+    ),
+    #241d26;
+  border: 1px solid #3a2f38;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.4);
+}
+
+/* === 衣柜 === */
+.room-wardrobe {
+  position: absolute;
+  right: 4%;
+  top: 5%;
+  width: 12%;
+  height: 35%;
+  background: linear-gradient(180deg, #2e252c 0%, #261e26 100%);
+  border: 1px solid #3a2f38;
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+.room-wardrobe::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: #3a2f38;
+}
+
+/* === 文件柜 === */
+.room-cabinet {
+  position: absolute;
+  right: 18%;
+  top: 42%;
+  width: 12%;
+  height: 25%;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent 0px,
+      transparent 30px,
+      #2e242c 30px,
+      #2e242c 31px
+    ),
+    #241d26;
+  border: 1px solid #3a2f38;
+}
+
+/* === 门（后墙） === */
+.room-door {
+  position: absolute;
+  left: 44%;
+  bottom: 3%;
+  width: 12%;
+  height: 30%;
+  background: linear-gradient(180deg, #2a222b 0%, #1f1820 100%);
+  border: 2px solid #3a2f38;
+  border-radius: 2px 2px 0 0;
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.4);
+}
+
+.room-door::after {
+  content: '';
+  position: absolute;
+  right: 6px;
+  top: 45%;
+  width: 3px;
+  height: 3px;
+  background: #c4a45a;
+  border-radius: 50%;
+  box-shadow: 0 0 4px rgba(196,164,90,0.4);
+}
+
+/* === 镜子 === */
+.room-mirror {
+  position: absolute;
+  left: 48%;
+  top: 22%;
+  width: 6%;
+  height: 12%;
+  background:
+    linear-gradient(135deg,
+      rgba(60,50,70,0.3) 0%,
+      rgba(40,30,50,0.5) 50%,
+      rgba(60,50,70,0.3) 100%
+    ),
+    #1a141c;
+  border: 1px solid #4a3f48;
+  border-radius: 1px;
+  box-shadow: 0 0 8px rgba(0,0,0,0.5);
+  cursor: pointer;
+}
+
+.room-mirror:hover {
+  box-shadow: 0 0 15px rgba(180,160,120,0.3);
+}
+
+/* 镜子激活——终结阶段 */
+.room-mirror.mirror-active {
+  box-shadow: 0 0 20px rgba(196, 164, 90, 0.5),
+              0 0 40px rgba(196, 164, 90, 0.2),
+              inset 0 0 15px rgba(196, 164, 90, 0.08);
+  animation: mirrorPulse 3s ease-in-out infinite;
+  cursor: pointer;
+}
+
+.room-mirror.mirror-active:hover {
+  box-shadow: 0 0 30px rgba(196, 164, 90, 0.7),
+              0 0 60px rgba(196, 164, 90, 0.35),
+              inset 0 0 20px rgba(196, 164, 90, 0.15);
+}
+
+@keyframes mirrorPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(196, 164, 90, 0.5), 0 0 40px rgba(196, 164, 90, 0.2), inset 0 0 15px rgba(196, 164, 90, 0.08); }
+  50% { box-shadow: 0 0 30px rgba(196, 164, 90, 0.7), 0 0 55px rgba(196, 164, 90, 0.3), inset 0 0 22px rgba(196, 164, 90, 0.14); }
+}
+
+/* === 垫子 === */
+.room-mat {
+  position: absolute;
+  right: 3%;
+  bottom: 5%;
+  width: 10%;
+  height: 8%;
+  background:
+    linear-gradient(180deg, #3a2f35 0%, #2e252c 100%);
+  border-radius: 4px;
+  opacity: 0.6;
+}
