@@ -39,10 +39,7 @@ export const initialState = {
 
   // 迷你分支记录
   miniChoices: {
-    tapePlayed: false,
-    sleepPillsCounted: false,
-    mintEaten: false,
-    rivalArchiveRead: false,
+    // 全部初始化为 undefined，迷你分支选择后才设置 true/false
   },
 
   // 结局路径（后台自动锁定，玩家不可见）

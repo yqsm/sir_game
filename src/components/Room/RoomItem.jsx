@@ -1,21 +1,32 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useGame } from '../../state/GameContext';
 import { ACTIONS } from '../../state/reducer';
 import { SCENES, ITEM_TIER_THRESHOLDS } from '../../game/constants';
 import './RoomItem.css';
 
+/** 用最新 state 判断某个物品的迷你分支是否已做过 */
+function isMiniChoiceResolved(item, miniChoices, choices) {
+  if (!item.miniChoice) return false;
+  switch (item.id) {
+    case 'badge':      return miniChoices.badgePickedUp !== undefined;
+    case 'recorder':   return miniChoices.tapePlayed !== undefined;
+    case 'mint':       return miniChoices.mintEaten !== undefined;
+    case 'sleepPills': return miniChoices.sleepPillsCounted !== undefined;
+    case 'rivalFile':  return miniChoices.rivalArchiveRead !== undefined;
+    case 'report':     return choices.reportRead !== undefined && choices.reportRead !== null;
+    default:           return false;
+  }
+}
+
 export default function RoomItem({ item }) {
   const { state, dispatch } = useGame();
-  const {
-    discoveredItems, flags, scene,
-  } = state;
+  const { discoveredItems, flags, scene, miniChoices, choices } = state;
 
   const isDiscovered = discoveredItems.includes(item.id);
   const hasFlag = item.flag ? flags[item.flag] : true;
 
-  // 层级解锁逻辑：基于已发现总数
+  // 层级解锁
   const totalFound = discoveredItems.length;
-
   let isLocked = false;
   let lockReason = '';
   if (item.tier === 'mid' && totalFound < ITEM_TIER_THRESHOLDS.MID_TIER) {
@@ -26,31 +37,27 @@ export default function RoomItem({ item }) {
     isLocked = true;
     lockReason = `（需先探索 ${ITEM_TIER_THRESHOLDS.DEEP_TIER} 件物品）`;
   }
-  // 物品前置条件
   if (item.prerequisite && !discoveredItems.includes(item.prerequisite)) {
     isLocked = true;
     lockReason = '（需要先找到钥匙）';
   }
 
-  const handleClick = useCallback(() => {
+  // 不用 useCallback，每次渲染都是最新闭包
+  const handleClick = () => {
     if (isLocked) return;
     if (scene !== SCENES.ROOM) return;
 
-    // 记录点击次数（彩蛋用）
     dispatch({ type: ACTIONS.INCREMENT_CLICK_COUNT, payload: item.id });
 
-    // 发现物品
     if (!isDiscovered) {
       dispatch({ type: ACTIONS.DISCOVER_ITEM, payload: item.id });
     }
-
-    // 设置 flag
     if (item.flag && !hasFlag) {
       dispatch({ type: ACTIONS.SET_FLAG, payload: { flag: item.flag } });
     }
 
-    // 迷你分支
-    if (item.miniChoice && scene === SCENES.ROOM) {
+    // 用最新 state 判断，不走闭包
+    if (item.miniChoice && !isMiniChoiceResolved(item, state.miniChoices, state.choices)) {
       dispatch({ type: ACTIONS.SET_CURRENT_MEMORY, payload: item });
       dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.MINI_CHOICE });
       dispatch({
@@ -65,13 +72,13 @@ export default function RoomItem({ item }) {
       return;
     }
 
-    // 正常记忆覆层
+    // 正常记忆
     dispatch({ type: ACTIONS.SET_CURRENT_MEMORY, payload: item });
     dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.MEMORY });
     if (item.memory) {
       dispatch({ type: ACTIONS.QUEUE_DIALOGUE, payload: { type: 'memory', lines: item.memory } });
     }
-  }, [isLocked, isDiscovered, scene, item, dispatch, hasFlag]);
+  };
 
   const className = [
     'room-item',
