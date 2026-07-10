@@ -203,15 +203,15 @@ export function determineEnding(flags, choices, miniChoices, discoveredItems) {
     return ENDINGS.UNDER_VAST_SKY;
   }
 
-  // 3. 芬梨道上
+  // 3. 芬梨道上 —— 找到了爱的证据，选择不回应，安静离开
   if (foundIntimacy && foundTenderness &&
       phoneAnswered === 'ignore' &&
-      doorOpened === 'staySilent' &&
-      !foundSurveillance) {
+      doorOpened === 'staySilent') {
     return ENDINGS.FENLI_ROAD;
   }
 
-  // 4. 斯德哥尔摩情人（fallback）
+  // 4. 斯德哥尔摩情人 —— 找到了控制/权力的证据，选择留下
+  // fallback：不满足以上任何条件时默认进入
   return ENDINGS.STOCKHOLM_LOVER;
 }
 

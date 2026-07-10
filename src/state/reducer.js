@@ -90,7 +90,7 @@ export function gameReducer(state, action) {
       const decisionId = action.payload;
       if (state.triggeredDecisions.includes(decisionId)) return state;
       // reportDP 和 computer-silent 不进入 DECISION 场景，只记录
-      if (decisionId === 'reportDP' || decisionId === 'computer-silent') {
+      if (decisionId === 'reportDP' || decisionId === 'computer-silent' || decisionId === 'mirror-silent') {
         const normalizedId = decisionId === 'computer-silent' ? 'computer' : decisionId;
         return {
           ...state,

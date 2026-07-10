@@ -15,21 +15,20 @@ export default function Room() {
     triggeredDecisions, choices, scene,
   } = state;
 
-  // 抉择触发逻辑（顺序推进，不跳跃）
+  // 抉择触发逻辑（电话和敲门独立触发，互不阻塞）
   useEffect(() => {
     if (scene !== SCENES.ROOM) return;
 
     const count = discoveredItems.length;
-    const phoneDone = triggeredDecisions.includes('phone');
 
-    // DP1: 电话响起 — 发现录音设备后，第一个触发
+    // DP1: 电话响起 — 发现录音设备后触发
     if (!triggeredDecisions.includes('phone') && flags.foundSurveillance) {
       dispatch({ type: ACTIONS.TRIGGER_DECISION, payload: 'phone' });
       return;
     }
 
-    // DP2: 电脑屏幕 — 警官证迷你分支后（电话之后才可能触发）
-    if (phoneDone && !triggeredDecisions.includes('computer') &&
+    // DP2: 电脑屏幕 — 警官证迷你分支后
+    if (!triggeredDecisions.includes('computer') &&
         miniChoices.hasOwnProperty('badgePickedUp')) {
       if (miniChoices.badgePickedUp) {
         dispatch({ type: ACTIONS.TRIGGER_DECISION, payload: 'computer' });
@@ -39,17 +38,41 @@ export default function Room() {
       }
     }
 
-    // DP3: 报告的迷你分支（通过 DialogueBox 独立处理，这里不触发）
+    // DP3: 报告 — 通过 DialogueBox 迷你分支独立处理
 
-    // DP4: 敲门声 — 电话完成后 + ≥10 件物品。这是最后一个抉择。
-    if (phoneDone && !triggeredDecisions.includes('door') &&
+    // DP4: 敲门声 — ≥10 件物品即触发
+    if (!triggeredDecisions.includes('door') &&
         count >= DECISION_TRIGGERS.DOOR_KNOCK) {
       dispatch({ type: ACTIONS.TRIGGER_DECISION, payload: 'door' });
       return;
     }
-
-    // ⚠️ 不再自动触发镜子。镜子在条件满足后变为可点击状态，由玩家主动点击。
   }, [scene, discoveredItems, flags, miniChoices, triggeredDecisions, dispatch]);
+
+  // 🪞 敲门抉择完成后 → 自动触发结局
+  useEffect(() => {
+    if (scene === SCENES.ROOM &&
+        choices.doorOpened &&
+        !triggeredDecisions.includes('mirror')) {
+      // 标记镜子已触发
+      dispatch({ type: ACTIONS.TRIGGER_DECISION, payload: 'mirror-silent' });
+      // 判定结局
+      const ending = determineEnding(flags, choices, miniChoices, discoveredItems);
+      const allUnlocked = checkAllMainEndingsUnlocked();
+      const hasCreatorItems = checkCreatorItems(flags);
+
+      if (allUnlocked && hasCreatorItems) {
+        dispatch({ type: ACTIONS.LOCK_ENDING, payload: 'creatorAndHer' });
+        dispatch({ type: ACTIONS.SET_ENDING, payload: 'creatorAndHer' });
+      } else if (allUnlocked && !hasCreatorItems) {
+        // 彩蛋模式但物品不够 → 短暂提示后仍正常结
+        dispatch({ type: ACTIONS.LOCK_ENDING, payload: ending });
+        dispatch({ type: ACTIONS.SET_ENDING, payload: ending });
+      } else {
+        dispatch({ type: ACTIONS.LOCK_ENDING, payload: ending });
+        dispatch({ type: ACTIONS.SET_ENDING, payload: ending });
+      }
+    }
+  }, [scene, choices.doorOpened]);
 
   // 报告 DP: 当 foundReport flag 设置为 true 且 miniChoice 还没被触发时
   // 报告自身的 miniChoice 在 items.js 中定义，会被 RoomItem 自动处理
@@ -106,34 +129,6 @@ export default function Room() {
     }
   }, [mirrorClicks, triggeredDecisions, easterEggsFound, dispatch]);
 
-  // 🪞 镜子是否进入"终结阶段"——可被点击揭示结局
-  const phoneDone = triggeredDecisions.includes('phone');
-  const doorDone = triggeredDecisions.includes('door');
-  const count = discoveredItems.length;
-  const mirrorActive = phoneDone && doorDone && count >= DECISION_TRIGGERS.MIRROR;
-
-  const handleMirrorReveal = useCallback(() => {
-    if (!mirrorActive) return;
-    const ending = determineEnding(flags, choices, miniChoices, discoveredItems);
-    const allUnlocked = checkAllMainEndingsUnlocked();
-    const hasCreatorItems = checkCreatorItems(flags);
-
-    if (allUnlocked && hasCreatorItems) {
-      dispatch({ type: ACTIONS.LOCK_ENDING, payload: 'creatorAndHer' });
-      dispatch({ type: ACTIONS.SET_ENDING, payload: 'creatorAndHer' });
-    } else if (allUnlocked && !hasCreatorItems) {
-      // 进入彩蛋模式但物品不够 → 提示
-      dispatch({ type: ACTIONS.SET_CURRENT_MEMORY, payload: {
-        name: '镜子',
-        memory: ['镜子里你的倒影看着你。嘴唇动了动。"还差一点。老鼠的足迹。迷宫的出口。甜味的线索。找到它们，再回来。"']
-      }});
-      dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.MEMORY });
-    } else {
-      dispatch({ type: ACTIONS.LOCK_ENDING, payload: ending });
-      dispatch({ type: ACTIONS.SET_ENDING, payload: ending });
-    }
-  }, [mirrorActive, flags, choices, miniChoices, discoveredItems, dispatch]);
-
   // 彩蛋5: 窗口 x7
   const [windowClicks, setWindowClicks] = useState(0);
   const handleWindowClick = useCallback(() => {
@@ -165,11 +160,7 @@ export default function Room() {
         <div className="room-wardrobe" />
         <div className="room-cabinet" />
         <div className="room-door" />
-        <div
-          className={`room-mirror ${mirrorActive ? 'mirror-active' : ''}`}
-          onClick={mirrorActive ? handleMirrorReveal : handleMirrorClick}
-          title={mirrorActive ? '镜子在发光。点击它。' : undefined}
-        />
+        <div className="room-mirror" onClick={handleMirrorClick} />
         <div className="room-mat" />
       </div>
 
@@ -212,25 +203,6 @@ export default function Room() {
       )}
 
       <InventoryBar />
-
-      {/* 镜子激活提示 */}
-      {mirrorActive && (
-        <div style={{
-          position: 'absolute',
-          bottom: '42px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          color: 'rgba(196,164,90,0.8)',
-          fontSize: '14px',
-          fontFamily: 'var(--font-serif)',
-          zIndex: 19,
-          animation: 'pulse 2s ease-in-out infinite',
-          textAlign: 'center',
-          pointerEvents: 'none',
-        }}>
-          镜子里有什么在闪烁。
-        </div>
-      )}
     </div>
   );
 }

@@ -14,8 +14,6 @@ export default function TitleScreen() {
     'fenliRoad', 'noLoveInYourKilling',
     'underVastSky', 'stockholmLover',
   ].every(e => completedEndings.includes(e));
-  const bonusEndingDone = completedEndings.includes('creatorAndHer');
-  const allDone = allMainEndingsDone && bonusEndingDone;
 
   return (
     <div className="title-screen">
@@ -28,7 +26,7 @@ export default function TitleScreen() {
         >
           进入
         </button>
-        {allDone && (
+        {allMainEndingsDone && (
           <button
             className="title-btn title-btn-hidden"
             onClick={() => {
