@@ -72,6 +72,21 @@ export default function RoomItem({ item }) {
       return;
     }
 
+    // 领带彩蛋：第2次"很软"，第3次起显示杨锦荣的话
+    if (item.id === 'tie') {
+      const tieClicks = (state.itemClickCounts.tie || 0) + 1; // +1 预估本次点击
+      if (tieClicks >= 3) {
+        dispatch({ type: ACTIONS.SET_CURRENT_MEMORY, payload: { name: '？？？', memory: ['"别总是对我领带下手。"', '杨锦荣的口吻。但他不在。这句话是怎么出现在这里的？'] }});
+        dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.MEMORY });
+        return;
+      }
+      if (tieClicks >= 2) {
+        dispatch({ type: ACTIONS.SET_CURRENT_MEMORY, payload: { name: '领带', memory: ['他把领带捏在指尖。丝绸很凉。很软。'] }});
+        dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.MEMORY });
+        return;
+      }
+    }
+
     // 正常记忆
     dispatch({ type: ACTIONS.SET_CURRENT_MEMORY, payload: item });
     dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.MEMORY });

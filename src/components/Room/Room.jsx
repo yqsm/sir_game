@@ -101,18 +101,6 @@ export default function Room() {
   // 🥚 彩蛋逻辑
   const { itemClickCounts, easterEggsFound } = state;
 
-  // 彩蛋1: 领带 x3
-  useEffect(() => {
-    if (itemClickCounts.tie >= 3 && !easterEggsFound.includes('tie3x')) {
-      dispatch({ type: ACTIONS.RECORD_EASTER_EGG, payload: 'tie3x' });
-      dispatch({ type: ACTIONS.SET_CURRENT_MEMORY, payload: {
-        name: '？？？',
-        memory: ['"别总是对我领带下手。"', '杨锦荣的口吻。但他不在。这句话是怎么出现在这里的？']
-      }});
-      dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.MEMORY });
-    }
-  }, [itemClickCounts.tie]);
-
   // 彩蛋3: 镜子 x5
   const [mirrorClicks, setMirrorClicks] = useState(0);
   const handleMirrorClick = useCallback(() => {
