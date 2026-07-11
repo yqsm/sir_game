@@ -71,11 +71,11 @@ export default function Room() {
   const [mirrorClicks, setMirrorClicks] = useState(0);
   const handleMirrorClick = useCallback(() => {
     if (triggeredDecisions.includes('mirror')) return;
-    if (easterEggsFound.includes('mirror5x')) return;
+    if (easterEggsFound.includes('mirror2x')) return;
     const next = mirrorClicks + 1;
     setMirrorClicks(next);
-    if (next >= 5) {
-      dispatch({ type: ACTIONS.RECORD_EASTER_EGG, payload: 'mirror5x' });
+    if (next >= 2) {
+      dispatch({ type: ACTIONS.RECORD_EASTER_EGG, payload: 'mirror2x' });
       dispatch({ type: ACTIONS.SET_CURRENT_MEMORY, payload: {
         name: '镜子里的倒影',
         memory: [
@@ -90,11 +90,11 @@ export default function Room() {
   // 彩蛋5: 窗口 x7
   const [windowClicks, setWindowClicks] = useState(0);
   const handleWindowClick = useCallback(() => {
-    if (easterEggsFound.includes('window7x')) return;
+    if (easterEggsFound.includes('window2x')) return;
     const next = windowClicks + 1;
     setWindowClicks(next);
-    if (next >= 7) {
-      dispatch({ type: ACTIONS.RECORD_EASTER_EGG, payload: 'window7x' });
+    if (next >= 2) {
+      dispatch({ type: ACTIONS.RECORD_EASTER_EGG, payload: 'window2x' });
       dispatch({ type: ACTIONS.SET_CURRENT_MEMORY, payload: {
         name: '窗外的猫',
         memory: [

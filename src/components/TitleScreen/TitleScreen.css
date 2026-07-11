@@ -4,12 +4,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   background: var(--bg-black);
+  overflow-y: auto;
+  padding: 60px 20px 20px;
 }
 
 .title-content {
   text-align: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .title-main {
@@ -54,9 +61,17 @@
   margin-top: 24px;
 }
 
-.title-progress {
+.title-bottom {
   position: absolute;
-  bottom: 40px;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.title-progress {
   display: flex;
   gap: 8px;
   font-size: 18px;
@@ -65,4 +80,54 @@
 
 .progress-dot.filled {
   color: var(--accent-gold);
+}
+
+.title-endings-toggle {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  font-size: 12px;
+  font-family: var(--font-sans);
+  color: var(--bg-black);
+  background: var(--accent-gold);
+  border: none;
+  padding: 4px 14px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.title-endings-toggle:hover {
+  opacity: 0.85;
+}
+
+.title-endings-list {
+  position: absolute;
+  bottom: 60px;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  animation: fadeIn 0.3s ease;
+  white-space: nowrap;
+  background: rgba(10, 6, 12, 0.92);
+  padding: 12px 20px;
+  border: 1px solid rgba(196, 164, 90, 0.15);
+  border-radius: 2px;
+}
+
+.title-ending-item {
+  font-size: 14px;
+  font-family: var(--font-serif);
+  transition: all 0.3s;
+}
+
+.title-ending-item.unlocked {
+  color: var(--accent-gold);
+}
+
+.title-ending-item.locked {
+  color: var(--text-dim);
+  letter-spacing: 4px;
 }

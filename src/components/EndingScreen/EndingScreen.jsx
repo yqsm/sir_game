@@ -146,14 +146,6 @@ export default function EndingScreen() {
               ))}
             </div>
             <div className="ending-fin">— 完 —</div>
-            {state.discoveredItems.length >= 18 && (
-              <div style={{
-                textAlign: 'center', fontSize: '13px', color: 'var(--text-dim)',
-                marginBottom: '20px', fontStyle: 'italic'
-              }}>
-                "全收集。你已经看到了这个房间里的所有东西。或者，几乎所有东西。"
-              </div>
-            )}
             <button className="ending-replay-btn" onClick={handleReplay}>
               再来一次
             </button>
