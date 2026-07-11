@@ -3,6 +3,7 @@ import { useGame } from '../../state/GameContext';
 import { STORAGE_KEY } from '../../game/constants';
 import { ENDING_TEXTS } from '../../game/endings';
 import { typewriter, createTypewriterController } from '../../utils/typewriter';
+import { stopRain, playEndingMusic } from '../../utils/audio';
 import './EndingScreen.css';
 
 export default function EndingScreen() {
@@ -15,6 +16,17 @@ export default function EndingScreen() {
   const containerRef = useRef(null);
 
   const endingData = ENDING_TEXTS[ending];
+
+  // 结局开始 → 停止雨声，播放结局音乐
+  useEffect(() => {
+    if (ending === 'stockholmLover') {
+      playEndingMusic('lover.mp3');
+    } else if (ending === 'fenliRoad') {
+      playEndingMusic('fenli.mp3');
+    } else {
+      stopRain();
+    }
+  }, []);
 
   // 自动滚动到底部
   useEffect(() => {
