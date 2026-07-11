@@ -241,6 +241,7 @@ export const ITEMS = [
     size: { w: 5, h: 5 },
     flag: 'foundPower',
     hint: '上锁的抽屉里，一副警用标准手铐',
+    prerequisite: 'keys',
     memory: [
       '"咔哒一声解开了，立刻就在背后摸索着把他给铐了，攻守异势。"',
       '手铐内侧刻了一行小字：`Property of SIP`。保安科的财产。但被用在了非公务场合。杨锦荣从来不觉得这是违规——在他的定义里，控制刘建明就是公务的一部分。',
@@ -256,6 +257,7 @@ export const ITEMS = [
     size: { w: 5, h: 4 },
     flag: 'foundSurveillance',
     hint: '上锁的抽屉里，手铐旁边，一台小型录音机',
+    prerequisite: 'keys',
     miniChoice: {
       prompt: '录音机里有一盘磁带。标签上没有写字，只有一行日期——他认出来了。是三个月前的某个晚上。他刚和韩琛通完电话的那个晚上。播放键是红色的。',
       options: [
