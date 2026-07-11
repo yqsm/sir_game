@@ -126,73 +126,138 @@ export default function DecisionPanel() {
 
 // 电脑屏幕抉择
 function ComputerDecision() {
-  const { state, dispatch } = useGame();
-  const [easterEgg, setEasterEgg] = useState(null); // null | 'typing' | 'done'
+  const { dispatch } = useGame();
+
+  // 彩蛋终端状态: null | 'input1' | 'input2' | 'typing' | 'done'
+  const [terminalStep, setTerminalStep] = useState(null);
+  const [inputValue, setInputValue] = useState('');
   const [terminalText, setTerminalText] = useState('');
-  const ctrlRef = useRef(null);
+  const [errorMsg, setErrorMsg] = useState('');
+  const inputRef = useRef(null);
 
-  const surfaceItems = ['tie', 'badge', 'glasses', 'mcdonalds', 'biscuit'];
-  const allSurfaceFound = surfaceItems.every(id => state.discoveredItems.includes(id));
-
-  const terminalLines = [
-    '> 键入：杨锦荣',
-    '> 键入：404',
-    '> 把手放到他手心里，申请第二阶段生物认证',
-    '> 认证失败。',
-    '> 认证失败。',
+  const finalLines = [
     '> ……',
-    '> 你不在系统里。从来都不在。',
+    '> 你不在系统里。',
   ];
 
   const handleLookCloser = () => {
-    if (allSurfaceFound) {
-      setEasterEgg('typing');
-      const ctrl = createTypewriterController();
-      ctrlRef.current = ctrl;
-      let cancelled = false;
-      (async () => {
-        for (const line of terminalLines) {
-          if (cancelled) break;
-          for await (const partial of typewriter(line, 50, ctrl.signal)) {
-            if (cancelled) break;
-            setTerminalText(prev => {
-              const lines = prev.split('\n');
-              lines[lines.length - 1] = partial;
-              return lines.join('\n');
-            });
-          }
-          if (!cancelled) {
-            setTerminalText(prev => prev + '\n');
-          }
-        }
+    setTerminalStep('input1');
+    setTerminalText('> 键入姓名：');
+    setTimeout(() => inputRef.current?.focus(), 100);
+  };
+
+  const handleSubmitInput = (e) => {
+    e.preventDefault();
+    const val = inputValue.trim();
+    setErrorMsg('');
+
+    if (terminalStep === 'input1') {
+      if (val === '杨锦荣') {
+        setInputValue('');
+        setTerminalStep('input2');
+        setTerminalText('> 键入姓名：杨锦荣\n\n> 键入警号：');
+      } else {
+        setErrorMsg('认证失败。');
+      }
+    } else if (terminalStep === 'input2') {
+      if (val === '404') {
+        setInputValue('');
+        setErrorMsg('');
+        setTerminalStep('typing');
+        setTerminalText(prev => prev + val);
+        // auto-type the rest
+        autoTypeFinal();
+      } else {
+        setErrorMsg('认证失败。');
+      }
+    }
+  };
+
+  const autoTypeFinal = () => {
+    let cancelled = false;
+    let lineIdx = 0;
+    const ctrl = createTypewriterController();
+
+    const typeLine = async () => {
+      if (cancelled || lineIdx >= finalLines.length) {
         if (!cancelled) {
-          await new Promise(r => setTimeout(r, 800));
-          setEasterEgg('done');
+          await new Promise(r => setTimeout(r, 10000));
+          setTerminalStep('done');
           setTerminalText('');
           dispatch({ type: ACTIONS.MAKE_CHOICE, payload: { choiceKey: 'computerChecked', value: 'lookCloser' } });
           dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.ROOM });
         }
-      })();
-    } else {
-      dispatch({ type: ACTIONS.MAKE_CHOICE, payload: { choiceKey: 'computerChecked', value: 'lookCloser' } });
-      dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.ROOM });
-    }
+        return;
+      }
+      const line = finalLines[lineIdx];
+      for await (const partial of typewriter(line, 50, ctrl.signal)) {
+        if (cancelled) break;
+        const base = finalLines.slice(0, lineIdx).map(l => l).join('\n');
+        setTerminalText(prev => {
+          const parts = prev.split('\n');
+          // replace the last partial line
+          const beforeLast = parts.slice(0, parts.length - 1).join('\n');
+          return (beforeLast ? beforeLast + '\n' : '') + partial;
+        });
+      }
+      if (!cancelled) {
+        setTerminalText(prev => prev + '\n');
+        lineIdx++;
+        await new Promise(r => setTimeout(r, 300));
+        typeLine();
+      }
+    };
+    typeLine();
   };
 
-  // 跳过打字机
-  const skipTerminal = () => {
-    ctrlRef.current?.skip();
-  };
-
-  if (easterEgg) {
+  if (terminalStep && terminalStep !== 'done') {
     return (
-      <div className="decision-overlay" onClick={skipTerminal}>
+      <div className="decision-overlay">
         <div className="decision-card" style={{ fontFamily: 'monospace' }}>
           <div className="decision-title" style={{ color: '#5a8a5a' }}>TERMINAL</div>
-          <div className="decision-prompt" style={{ color: '#7aaa7a', whiteSpace: 'pre-wrap' }}>
-            {terminalText || '_'}
+          <div className="decision-prompt" style={{ color: '#7aaa7a', whiteSpace: 'pre-wrap', minHeight: '40px' }}>
+            {terminalText}
+            {(terminalStep === 'input1' || terminalStep === 'input2') && (
+              <span className="cursor-blink">_</span>
+            )}
           </div>
-          {easterEgg === 'typing' && <div className="dialogue-hint">（点击跳过）</div>}
+          {(terminalStep === 'input1' || terminalStep === 'input2') && (
+            <form onSubmit={handleSubmitInput} style={{ display: 'flex', gap: '8px', marginTop: '10px' }}>
+              <input
+                ref={inputRef}
+                type="text"
+                value={inputValue}
+                onChange={e => setInputValue(e.target.value)}
+                style={{
+                  flex: 1,
+                  background: 'rgba(0,0,0,0.6)',
+                  border: '1px solid #5a8a5a',
+                  color: '#7aaa7a',
+                  fontFamily: 'monospace',
+                  fontSize: '15px',
+                  padding: '6px 10px',
+                  outline: 'none',
+                }}
+                autoFocus
+              />
+              <button type="submit" style={{
+                background: 'rgba(90,138,90,0.2)',
+                border: '1px solid #5a8a5a',
+                color: '#7aaa7a',
+                fontFamily: 'monospace',
+                fontSize: '14px',
+                padding: '6px 14px',
+                cursor: 'pointer',
+              }}>
+                确定
+              </button>
+            </form>
+          )}
+          {errorMsg && (
+            <div style={{ color: '#cc5555', fontFamily: 'monospace', fontSize: '14px', marginTop: '8px' }}>
+              {errorMsg}
+            </div>
+          )}
         </div>
       </div>
     );
