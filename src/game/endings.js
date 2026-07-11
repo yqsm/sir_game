@@ -138,8 +138,6 @@ export const ENDING_TEXTS = {
 
       '刘建明679留',
       
-
-      
     ],
   },
 };
