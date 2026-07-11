@@ -98,34 +98,6 @@ export const ENDING_TEXTS = {
     ],
   },
 
-  [ENDINGS.CREATOR_AND_HER]: {
-    title: '创作者与她',
-    subtitle: '— 你不是一个人 —',
-    paragraphs: [
-      '三件东西都在了。老鼠耳朵。迷宫图纸。焦糖饼干。',
-
-      '你站在镜子前。镜面开始发光——不是反射。是屏幕的光。',
-
-      '镜子里不再是你。是一行字："加载路径：彩蛋结局"',
-
-      '办公室的门自己打开了。外面不是保安科的走廊。是一个明亮的房间。两个女孩坐在电脑前。一个戴着猫耳朵——毛绒的，和你手上这对很像。另一个穿着杜宾犬图案的卫衣。',
-
-      '她们同时转头看你。',
-
-      '"你终于走到这里了。"',
-
-      '然后她们继续打字。屏幕上流淌的文字——你刚才经历的一切。芬梨道上的雨。录音机里的沉默。浩园的墓碑。皮带在脖子上的触感。所有的一切。是她们在写。',
-
-      '猫耳朵女孩伸了个懒腰。"饿了。""今天吃湿炒牛河？""行。走吧。"',
-
-      '她们站起来经过你——没有碰到你，但笑着看了你一眼。不是看刘建明。是看屏幕外的人。',
-
-      '你留在原地。屏幕还亮着。桌面上的文件夹：荣明_WIP。里面有文档、对话截图、手绘迷宫草图、焦糖饼干的照片（咬了一口）、一段名为"薄荷糖.mp3"的音频。',
-
-      '原来你不是一个人。从来都不是。',
-    ],
-  },
-
   [ENDINGS.ETERNAL_FRIENDSHIP]: {
     title: '友谊地久天长',
     subtitle: '— 虚构的荣明，真实的我们 —',
@@ -166,62 +138,36 @@ export const ENDING_TEXTS = {
  * 如果没有匹配，返回匹配度最高的那条
  */
 export function determineEnding(flags, choices, miniChoices, discoveredItems) {
-  const {
-    foundIntimacy, foundIdentity, foundClarity, foundControl,
-    foundPower, foundTenderness, foundBelonging, foundTrust,
-    foundLost, foundSurveillance,
-  } = flags;
+  const { phoneAnswered, computerChecked, reportRead, doorOpened } = choices;
+  const { tapePlayed, mintEaten, sleepPillsCounted, badgePickedUp } = miniChoices;
 
-  const {
-    phoneAnswered, computerChecked, reportRead, doorOpened,
-  } = choices;
-
-  const { tapePlayed, mintEaten, sleepPillsCounted, rivalArchiveRead } = miniChoices;
-
-  // 检查彩蛋条件
-  const hasMouseEars = flags.foundMouseEars;
-  const hasGame = flags.foundGame;
-  const hasDomestic = flags.foundDomestic;
-  const allEndingsUnlocked = checkAllMainEndingsUnlocked();
-
-  if (allEndingsUnlocked && hasMouseEars && hasGame && hasDomestic) {
-    return ENDINGS.CREATOR_AND_HER;
-  }
-
-  // 1. 你的杀人手法里没有对我的爱
-  //    主动挖掘真相：播放了录音带 + 深挖电脑 + 读完了报告 → 开门迎向陷阱
-  if (foundSurveillance && tapePlayed &&
-      foundIdentity && computerChecked === 'lookCloser' &&
+  // ① 你的杀人手法里没有对我的爱
+  //    主动挖出全部真相 → 开门迎向陷阱
+  if (tapePlayed &&
+      badgePickedUp && computerChecked === 'lookCloser' &&
       reportRead === 'readAll' &&
       doorOpened === 'open') {
     return ENDINGS.NO_LOVE_IN_KILLING;
   }
 
-  // 2. 浩园之下
-  //    找到了归属 + 信任 + 身份认同 → 接电话 + 开门 → 接受命运
-  //    还必须：拿起警官证面对身份问题 + 关掉电脑（不深挖，选择接受而非追查）
-  //    还必须：数过安眠药（直面过自己的脆弱和极限）
-  if (foundBelonging && foundTrust && foundIdentity &&
-      miniChoices.badgePickedUp === true &&
-      computerChecked === 'close' &&
+  // ② 浩园之下
+  //    面对身份但不深挖 + 回应连接 + 直面脆弱 → 接受命运
+  if (badgePickedUp && computerChecked === 'close' &&
       phoneAnswered === 'answer' &&
       doorOpened === 'open' &&
       sleepPillsCounted) {
     return ENDINGS.UNDER_VAST_SKY;
   }
 
-  // 3. 芬梨道上
-  //    找到了领带（亲密）+ 薄荷糖（温柔）→ 不接 + 不出声 → 安静离开
-  //    还必须：吃了那颗薄荷糖（选择了接受这份温柔）
-  if (foundIntimacy && foundTenderness &&
+  // ③ 芬梨道上
+  //    接受温柔 + 选择沉默 → 带着记忆离开
+  if (mintEaten &&
       phoneAnswered === 'ignore' &&
-      doorOpened === 'staySilent' &&
-      mintEaten) {
+      doorOpened === 'staySilent') {
     return ENDINGS.FENLI_ROAD;
   }
 
-  // 4. 斯德哥尔摩情人（fallback）
-  //    不满足以上任何条件时默认进入
+  // ④ 斯德哥尔摩情人（fallback）
   return ENDINGS.STOCKHOLM_LOVER;
 }
 
@@ -243,9 +189,3 @@ export function checkAllMainEndingsUnlocked() {
   }
 }
 
-/**
- * 判断彩蛋模式下物品是否集齐（用于镜子提示）
- */
-export function checkCreatorItems(flags) {
-  return flags.foundMouseEars && flags.foundGame && flags.foundDomestic;
-}

@@ -3,7 +3,7 @@ import { useGame } from '../../state/GameContext';
 import { ACTIONS } from '../../state/reducer';
 import { ITEMS } from '../../game/items';
 import { SCENES, DECISION_TRIGGERS } from '../../game/constants';
-import { determineEnding, checkAllMainEndingsUnlocked, checkCreatorItems } from '../../game/endings';
+import { determineEnding } from '../../game/endings';
 import { setRainIntensity } from '../../utils/audio';
 import RoomItem from './RoomItem';
 import InventoryBar from '../InventoryBar/InventoryBar';
@@ -44,9 +44,9 @@ export default function Room() {
 
     // DP3: 报告 — 通过 DialogueBox 迷你分支独立处理
 
-    // DP4: 敲门声 — ≥10 件物品即触发
+    // DP4: 敲门声 — 18件全部找到才触发
     if (!triggeredDecisions.includes('door') &&
-        count >= DECISION_TRIGGERS.DOOR_KNOCK) {
+        count >= 18) {
       dispatch({ type: ACTIONS.TRIGGER_DECISION, payload: 'door' });
       return;
     }
@@ -61,20 +61,8 @@ export default function Room() {
       dispatch({ type: ACTIONS.TRIGGER_DECISION, payload: 'mirror-silent' });
       // 判定结局
       const ending = determineEnding(flags, choices, miniChoices, discoveredItems);
-      const allUnlocked = checkAllMainEndingsUnlocked();
-      const hasCreatorItems = checkCreatorItems(flags);
-
-      if (allUnlocked && hasCreatorItems) {
-        dispatch({ type: ACTIONS.LOCK_ENDING, payload: 'creatorAndHer' });
-        dispatch({ type: ACTIONS.SET_ENDING, payload: 'creatorAndHer' });
-      } else if (allUnlocked && !hasCreatorItems) {
-        // 彩蛋模式但物品不够 → 短暂提示后仍正常结
-        dispatch({ type: ACTIONS.LOCK_ENDING, payload: ending });
-        dispatch({ type: ACTIONS.SET_ENDING, payload: ending });
-      } else {
-        dispatch({ type: ACTIONS.LOCK_ENDING, payload: ending });
-        dispatch({ type: ACTIONS.SET_ENDING, payload: ending });
-      }
+      dispatch({ type: ACTIONS.LOCK_ENDING, payload: ending });
+      dispatch({ type: ACTIONS.SET_ENDING, payload: ending });
     }
   }, [scene, choices.doorOpened]);
 

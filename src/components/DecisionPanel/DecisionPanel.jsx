@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useGame } from '../../state/GameContext';
 import { ACTIONS } from '../../state/reducer';
-import { SCENES, DECISION_TRIGGERS } from '../../game/constants';
-import { determineEnding, checkAllMainEndingsUnlocked, checkCreatorItems } from '../../game/endings';
+import { SCENES } from '../../game/constants';
 import { typewriter, createTypewriterController } from '../../utils/typewriter';
 import './DecisionPanel.css';
 
@@ -30,10 +29,9 @@ const DECISIONS = {
 
 export default function DecisionPanel() {
   const { state, dispatch } = useGame();
-  const { currentDecision, flags, discoveredItems, choices, miniChoices } = state;
+  const { currentDecision } = state;
   const [displayedPrompt, setDisplayedPrompt] = useState('');
   const [showOptions, setShowOptions] = useState(false);
-  const [mirrorMessage, setMirrorMessage] = useState('');
   const ctrlRef = useRef(null);
 
   const decision = DECISIONS[currentDecision];
@@ -59,33 +57,9 @@ export default function DecisionPanel() {
     return () => { cancelled = true; };
   }, [currentDecision]);
 
-  // 处理镜子揭示
-  useEffect(() => {
-    if (!decision?.isMirror) return;
+  // 处理镜子揭示（已废弃——结局现在由敲门抉择后自动触发）
+  // 保留代码以防后续使用
 
-    const ending = determineEnding(flags, choices, miniChoices, discoveredItems);
-    const allUnlocked = checkAllMainEndingsUnlocked();
-    const hasCreatorItems = checkCreatorItems(flags);
-
-    let timeout;
-    if (allUnlocked && hasCreatorItems) {
-      setMirrorMessage('三件东西都在了。镜面开始发光——不是反射。是屏幕的光。');
-      timeout = setTimeout(() => {
-        dispatch({ type: ACTIONS.LOCK_ENDING, payload: 'creatorAndHer' });
-        dispatch({ type: ACTIONS.SET_ENDING, payload: 'creatorAndHer' });
-      }, 3500);
-    } else if (allUnlocked && !hasCreatorItems) {
-      setMirrorMessage('镜子里你的倒影看着你。嘴唇动了动。"还差一点。老鼠的足迹。迷宫的出口。甜味的线索。找到它们，再回来。"（点击继续探索）');
-    } else {
-      setMirrorMessage('镜子里不再是你的脸。你看到了自己——真正的自己。');
-      timeout = setTimeout(() => {
-        dispatch({ type: ACTIONS.LOCK_ENDING, payload: ending });
-        dispatch({ type: ACTIONS.SET_ENDING, payload: ending });
-      }, 3500);
-    }
-
-    return () => { if (timeout) clearTimeout(timeout); };
-  }, [currentDecision]);
 
   const handleChoice = useCallback((value) => {
     const key = currentDecision === 'phone' ? 'phoneAnswered' :
@@ -152,7 +126,77 @@ export default function DecisionPanel() {
 
 // 电脑屏幕抉择
 function ComputerDecision() {
-  const { dispatch } = useGame();
+  const { state, dispatch } = useGame();
+  const [easterEgg, setEasterEgg] = useState(null); // null | 'typing' | 'done'
+  const [terminalText, setTerminalText] = useState('');
+  const ctrlRef = useRef(null);
+
+  const surfaceItems = ['tie', 'badge', 'glasses', 'mcdonalds', 'biscuit'];
+  const allSurfaceFound = surfaceItems.every(id => state.discoveredItems.includes(id));
+
+  const terminalLines = [
+    '> 键入：杨锦荣',
+    '> 键入：404',
+    '> 把手放到他手心里，申请第二阶段生物认证',
+    '> 认证失败。',
+    '> 认证失败。',
+    '> ……',
+    '> 你不在系统里。从来都不在。',
+  ];
+
+  const handleLookCloser = () => {
+    if (allSurfaceFound) {
+      setEasterEgg('typing');
+      const ctrl = createTypewriterController();
+      ctrlRef.current = ctrl;
+      let cancelled = false;
+      (async () => {
+        for (const line of terminalLines) {
+          if (cancelled) break;
+          for await (const partial of typewriter(line, 50, ctrl.signal)) {
+            if (cancelled) break;
+            setTerminalText(prev => {
+              const lines = prev.split('\n');
+              lines[lines.length - 1] = partial;
+              return lines.join('\n');
+            });
+          }
+          if (!cancelled) {
+            setTerminalText(prev => prev + '\n');
+          }
+        }
+        if (!cancelled) {
+          await new Promise(r => setTimeout(r, 800));
+          setEasterEgg('done');
+          setTerminalText('');
+          dispatch({ type: ACTIONS.MAKE_CHOICE, payload: { choiceKey: 'computerChecked', value: 'lookCloser' } });
+          dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.ROOM });
+        }
+      })();
+    } else {
+      dispatch({ type: ACTIONS.MAKE_CHOICE, payload: { choiceKey: 'computerChecked', value: 'lookCloser' } });
+      dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.ROOM });
+    }
+  };
+
+  // 跳过打字机
+  const skipTerminal = () => {
+    ctrlRef.current?.skip();
+  };
+
+  if (easterEgg) {
+    return (
+      <div className="decision-overlay" onClick={skipTerminal}>
+        <div className="decision-card" style={{ fontFamily: 'monospace' }}>
+          <div className="decision-title" style={{ color: '#5a8a5a' }}>TERMINAL</div>
+          <div className="decision-prompt" style={{ color: '#7aaa7a', whiteSpace: 'pre-wrap' }}>
+            {terminalText || '_'}
+          </div>
+          {easterEgg === 'typing' && <div className="dialogue-hint">（点击跳过）</div>}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="decision-overlay">
@@ -162,10 +206,7 @@ function ComputerDecision() {
           屏幕上出现的是警队人事系统。深蓝色的界面，左上角是警务处的徽章。搜索栏里已经打好了刘建明的警号——不是他自己输入的。是警证里的芯片触发的。像是有人在等他来看。光标在搜索栏末尾一闪一闪。回车已经按过了。所有资料都在——评核报告，措辞官方而体面，每一份都有上级的签名。晋升记录，时间线和考核分数严丝合缝。薪金记录，数字按月递增，从未中断。他翻了五页。每一页都在说同一件事：刘建明是一个真实存在的高级督察。然后他翻到了最底层。需要最高权限才能看到的备注栏。只有一行小字。字体比正文略小。颜色是系统默认的黑色。不是红色——不是警报。只是备注。"此记录待确认。发起人：杨锦荣。状态：搁置。"下面没有处理历史。没有回复。没有关闭日期。这行字被放在这里，像是在等什么。等谁来确认。等谁来驳回。或者只是等——什么都不做。把一个人的存在悬在"待确认"三个字里。刘建明盯着屏幕。雨声很远。台灯的嗡鸣很近。光标还在闪。
         </div>
         <div className="decision-options">
-          <button className="decision-btn" onClick={() => {
-            dispatch({ type: ACTIONS.MAKE_CHOICE, payload: { choiceKey: 'computerChecked', value: 'lookCloser' } });
-            dispatch({ type: ACTIONS.SET_SCENE, payload: SCENES.ROOM });
-          }}>
+          <button className="decision-btn" onClick={handleLookCloser}>
             <span className="decision-btn-main">仔细查看</span>
             <span className="decision-btn-desc">往下翻，看那行备注</span>
           </button>

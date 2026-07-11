@@ -16,7 +16,6 @@ export const ENDINGS = {
   UNDER_VAST_SKY: 'underVastSky',       // 浩园之下 → 内部用 underVastSky
   STOCKHOLM_LOVER: 'stockholmLover',
   ETERNAL_FRIENDSHIP: 'eternalFriendship',
-  CREATOR_AND_HER: 'creatorAndHer',
 };
 
 // 氛围阶段阈值
