@@ -50,23 +50,27 @@ export const ENDING_TEXTS = {
     title: '浩园之下',
     subtitle: '— 浩圆之下，我们都是警察 —',
     paragraphs: [
-      '他挂了电话。杨锦荣的声音还留在耳朵里。"你在听吗。"听到了。',
+      '他挂了电话。杨锦荣的声音还留在耳朵里。"你在听吗。"听到了。但声音很远。像是从很久以前传来的。',
 
       '他走到门口。停顿。然后开门。',
 
-      '走廊是空的。但地上有一杯热茶，还在冒热气。杯底一张纸条。杨锦荣的字："喝完。别浪费。"',
+      '走廊不是保安科的走廊。走廊很长。尽头有一片很亮的光。他眯起眼睛——光里有两个人影。穿着制服。肩章上各有一颗星。其中一个转过头来。是杨锦荣。',
 
-      '他喝了。茶是温的。和杨锦荣每次放在床头的那杯一样。',
+      '杨锦荣没有说话。只是看着他。眼神和活着的时候一样——锐利、安静、带着一点不耐烦的耐心。好像在说：你终于走到这里了。',
 
-      '后来——那是后来的事。在一次行动中，他们死在了一起。不是针对韩琛——是比韩琛更大的人。行动名单上，刘建明的名字旁边写着"CIB"。不是卧底编号。是警号。',
+      '他低头看了看自己。穿着高级督察的制服。领带工工整。警官证在口袋里——他拿出来。上面的照片是他。名字是他。警号是他。正版的。真的。',
 
-      '杨锦荣策划的。杨锦荣确保了那份名单的正确性。杨锦荣确保了他的墓碑上刻的是真名。有名有姓。有来有去。',
+      '他忽然明白了。这不是今晚的事。今晚——或者说今晚的这场探索——是他死后的第七天。头七。他一直在这个办公室里徘徊，翻旧物，找答案，不知道自己在等什么。他在等的不是敲门声。他在等的是这一刻——杨锦荣来接他了。',
 
-      '浩园。两座墓碑相邻。',
+      '那次行动。比韩琛更大的目标。名单上他的名字旁边写着"CIB"。不是卧底编号。是警号。他和杨锦荣一起死的。同一次行动。同一颗子弹——或者两颗，这不重要。重要的是他们死在一起。以警察的身份。',
+
+      '浩园。两座墓碑相邻。杨锦荣确保了这一切——名单、编号、墓碑上的名字。有名有姓。有来有去。',
 
       '"浩圆之下，我们都是警察。"',
 
-      '有人来扫墓。两个年轻女孩，带了一盒湿炒牛河和一份麦麦。她们在两座墓碑前站了很久。其中一个人说："你觉得他们知道吗？"另一个人说："知道什么？""知道有人在写他们。"',
+      '他走进光里。杨锦荣伸出手——不是牵他，是拍了一下他的肩膀。和以前一样。动作很轻。像碰一片很薄的纸。然后两人一起往前走。光吞掉了他们的背影。',
+
+      '办公室空了。雨停了。桌上那杯茶还是温的。',
     ],
   },
 
@@ -95,6 +99,42 @@ export const ENDING_TEXTS = {
       '沉默。然后杨锦荣低下头，嘴唇几乎贴着他的耳朵。声音很低——低到刘建明几乎以为自己听错了。',
 
       '"我也没打算放你走。"',
+    ],
+  },
+
+  [ENDINGS.SNAKE_BITES_TAIL]: {
+    title: '咬自己尾巴的蛇',
+    subtitle: '— Game over —',
+    paragraphs: [
+      '他把录音带放进播放机。从头到尾——他给韩琛的汇报、行动细节、所有他不该说的话。存档。归档。证据。',
+
+      '电脑屏幕上，人事系统的备注栏里——"状态：搁置"。他读完了被划掉的铅笔字。',
+
+      '敲门声响了。他没有开。',
+
+      '他把所有证据收好——录音带揣进口袋、报告折好放回吸墨纸下面、电脑关掉。台灯已经烧了。只有窗外的街灯照进来，把他的影子投在对面的墙上。',
+
+      '他坐回杨锦荣的椅子上。黑暗里只有他的呼吸声。还有磁带在录音机里继续转的声音——他没有按停。',
+
+      '他想起了杨锦荣说过的那句话。"咬自己尾巴就Game over了刘sir。"蛇吞象的结局往往是被撑死成一条破蛇皮。他没有被保安科带走。没有死在浩园。没有走在芬梨道上。他只是坐在黑暗里，守着一堆他知道但没人来问的真相。贪吃蛇咬到了自己的尾巴。Game over。',
+    ],
+  },
+
+  [ENDINGS.SUSPENDED]: {
+    title: '搁置',
+    subtitle: '— 状态：搁置 —',
+    paragraphs: [
+      '他接了电话。杨锦荣的声音说："你在听吗。"听到了。',
+
+      '电脑屏幕上那行备注还在闪——"状态：搁置"。他关掉了屏幕。不是不想知道。是知道了太多已经够了。',
+
+      '敲门声响了。他没有开。',
+
+      '他走到门口，手指碰到了门把手。金属很凉。他没有转动。',
+
+      '他把那行备注看了一遍又一遍。"搁置"——没有确认，没有驳回，没有关闭日期。和刘建明的人生一样。杨锦荣对待他就像对待那份报告——写了一半，停在结论前，搁置。既不定罪也不释放。',
+
+      '他把门把手放开。回到了椅子上。雨还在下。他不知道这件事会搁置多久。也许永远。也许明天有人来敲门——不是今晚这种，是带着结论来的那种。他等着。',
     ],
   },
 
@@ -138,41 +178,106 @@ export const ENDING_TEXTS = {
  * 如果没有匹配，返回匹配度最高的那条
  */
 export function determineEnding(flags, choices, miniChoices, discoveredItems) {
-  const { phoneAnswered, computerChecked, reportRead, doorOpened } = choices;
-  const { tapePlayed, mintEaten, sleepPillsCounted, badgePickedUp } = miniChoices;
+  const { phoneAnswered, computerChecked, doorOpened } = choices;
+  const { tapePlayed, mintEaten, sleepPillsCounted, badgePickedUp, rivalArchiveRead } = miniChoices;
+  const reportRead = choices.reportRead; // 迷你分支，不计入 DP 过滤
 
-  // ① 你的杀人手法里没有对我的爱
-  //    主动挖出全部真相 → 开门迎向陷阱
-  if (tapePlayed &&
-      badgePickedUp && computerChecked === 'lookCloser' &&
-      reportRead === 'readAll' &&
-      doorOpened === 'open') {
-    return ENDINGS.NO_LOVE_IN_KILLING;
+  // === Phase 1: DP 过滤 ===
+  const candidates = new Set([
+    ENDINGS.FENLI_ROAD,
+    ENDINGS.NO_LOVE_IN_KILLING,
+    ENDINGS.UNDER_VAST_SKY,
+    ENDINGS.STOCKHOLM_LOVER,
+    ENDINGS.SNAKE_BITES_TAIL,
+    ENDINGS.SUSPENDED,
+  ]);
+
+  // DP1 电话
+  if (phoneAnswered === 'answer') {
+    candidates.delete(ENDINGS.FENLI_ROAD);
+  } else {
+    candidates.delete(ENDINGS.UNDER_VAST_SKY);
+    candidates.delete(ENDINGS.SUSPENDED);
   }
 
-  // ② 浩园之下
-  //    面对身份但不深挖 + 回应连接 + 直面脆弱 → 接受命运
-  if (badgePickedUp && computerChecked === 'close' &&
-      phoneAnswered === 'answer' &&
-      doorOpened === 'open' &&
-      sleepPillsCounted) {
-    return ENDINGS.UNDER_VAST_SKY;
+  // DP2 电脑
+  if (badgePickedUp === false || badgePickedUp === undefined) {
+    candidates.delete(ENDINGS.NO_LOVE_IN_KILLING);
+    candidates.delete(ENDINGS.UNDER_VAST_SKY);
+    candidates.delete(ENDINGS.SNAKE_BITES_TAIL);
+    candidates.delete(ENDINGS.SUSPENDED);
+  } else if (computerChecked === 'lookCloser') {
+    candidates.delete(ENDINGS.UNDER_VAST_SKY);
+    candidates.delete(ENDINGS.SUSPENDED);
+    candidates.delete(ENDINGS.STOCKHOLM_LOVER);
+  } else if (computerChecked === 'close') {
+    candidates.delete(ENDINGS.NO_LOVE_IN_KILLING);
+    candidates.delete(ENDINGS.SNAKE_BITES_TAIL);
+    candidates.delete(ENDINGS.STOCKHOLM_LOVER);
   }
 
-  // ③ 芬梨道上
-  //    接受温柔 + 选择沉默 → 带着记忆离开
-  if (mintEaten &&
-      phoneAnswered === 'ignore' &&
-      doorOpened === 'staySilent') {
-    return ENDINGS.FENLI_ROAD;
+  // DP3 敲门
+  if (doorOpened === 'open') {
+    candidates.delete(ENDINGS.FENLI_ROAD);
+    candidates.delete(ENDINGS.SNAKE_BITES_TAIL);
+  } else {
+    candidates.delete(ENDINGS.NO_LOVE_IN_KILLING);
+    candidates.delete(ENDINGS.UNDER_VAST_SKY);
   }
 
-  // ④ 斯德哥尔摩情人（fallback）
-  return ENDINGS.STOCKHOLM_LOVER;
+  // === Phase 2: 独剩 → 直接返回 ===
+  // === Phase 2: 独剩 / 空池 / 竞争 ===
+  if (candidates.size === 1) {
+    return [...candidates][0];
+  }
+  if (candidates.size === 0) {
+    return ENDINGS.STOCKHOLM_LOVER;
+  }
+
+  // === Phase 3: 竞争规则判定 ===
+  return resolveCompetition([...candidates], miniChoices, choices);
 }
 
 /**
- * 检查四条正式结局是否都已解锁
+ * 竞争路径规则判定
+ */
+function resolveCompetition(candidateArr, miniChoices, choices) {
+  const { mintEaten, tapePlayed, rivalArchiveRead } = miniChoices;
+  const { reportRead } = choices;
+
+  const has = (id) => candidateArr.includes(id);
+  const is = (ids) => ids.every(id => candidateArr.includes(id)) && candidateArr.length === ids.length;
+
+  // 竞争 A: 接+关掉+开门 → ③⑥
+  // 三件全不碰 → ③，碰了任何一件 → ⑥
+  if (is([ENDINGS.UNDER_VAST_SKY, ENDINGS.SUSPENDED])) {
+    if (!tapePlayed && reportRead !== 'readAll' && !rivalArchiveRead) {
+      return ENDINGS.UNDER_VAST_SKY;
+    }
+    return ENDINGS.SUSPENDED;
+  }
+
+  // 竞争 C/E: ①④
+  if (is([ENDINGS.FENLI_ROAD, ENDINGS.STOCKHOLM_LOVER])) {
+    if (mintEaten) return ENDINGS.FENLI_ROAD;
+    return ENDINGS.STOCKHOLM_LOVER;
+  }
+
+  // 竞争 D: 不接+仔细查看+不出声 → ①⑤
+  // 糖=温柔推①，录音/报告/档案=锁链推⑤
+  if (is([ENDINGS.FENLI_ROAD, ENDINGS.SNAKE_BITES_TAIL])) {
+    const evidence = (tapePlayed ? 1 : 0) + (reportRead === 'readAll' ? 1 : 0) + (rivalArchiveRead ? 1 : 0);
+    if (evidence >= 2) return ENDINGS.SNAKE_BITES_TAIL;
+    if (evidence === 1 && !mintEaten) return ENDINGS.SNAKE_BITES_TAIL;
+    return ENDINGS.FENLI_ROAD;
+  }
+
+  // fallback
+  return candidateArr[0];
+}
+
+/**
+ * 检查所有主线结局是否都已解锁（用于标题画面隐藏入口）
  */
 export function checkAllMainEndingsUnlocked() {
   try {
@@ -182,6 +287,8 @@ export function checkAllMainEndingsUnlocked() {
       ENDINGS.NO_LOVE_IN_KILLING,
       ENDINGS.UNDER_VAST_SKY,
       ENDINGS.STOCKHOLM_LOVER,
+      ENDINGS.SNAKE_BITES_TAIL,
+      ENDINGS.SUSPENDED,
     ];
     return mains.every(e => completed.includes(e));
   } catch {

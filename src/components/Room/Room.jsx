@@ -42,9 +42,7 @@ export default function Room() {
       }
     }
 
-    // DP3: 报告 — 通过 DialogueBox 迷你分支独立处理
-
-    // DP4: 敲门声 — 18件全部找到才触发
+    // DP3: 敲门声 — 18件全部找到才触发
     if (!triggeredDecisions.includes('door') &&
         count >= 18) {
       dispatch({ type: ACTIONS.TRIGGER_DECISION, payload: 'door' });
@@ -65,26 +63,6 @@ export default function Room() {
       dispatch({ type: ACTIONS.SET_ENDING, payload: ending });
     }
   }, [scene, choices.doorOpened]);
-
-  // 报告 DP: 当 foundReport flag 设置为 true 且 miniChoice 还没被触发时
-  // 报告自身的 miniChoice 在 items.js 中定义，会被 RoomItem 自动处理
-  // 但它也算一个决策点，需要被标记。我们在 RoomItem 点击 report 时处理。
-  // 这里只是确保 reportDP 被标记为已触发
-  useEffect(() => {
-    if (scene === SCENES.ROOM && flags.foundReport && !triggeredDecisions.includes('reportDP')) {
-      // 不用 dispatch TRIGGER_DECISION，因为 miniChoice 已经在 DialogueBox 中
-      // 只是记录这个事件已经发生
-      // 但我们需要它被计入"所有抉择完成"的条件中
-      // 所以: 当 choices.reportRead 被设置后，自动标记 reportDP 为已触发
-      if (choices.reportRead) {
-        // 手动添加到 triggeredDecisions
-        dispatch({
-          type: ACTIONS.TRIGGER_DECISION,
-          payload: 'reportDP'
-        });
-      }
-    }
-  }, [scene, flags.foundReport, choices.reportRead, triggeredDecisions, dispatch]);
 
   // 🥚 彩蛋逻辑
   const { itemClickCounts, easterEggsFound } = state;

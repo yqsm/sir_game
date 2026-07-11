@@ -15,6 +15,8 @@ export const ENDINGS = {
   NO_LOVE_IN_KILLING: 'noLoveInYourKilling',
   UNDER_VAST_SKY: 'underVastSky',       // 浩园之下 → 内部用 underVastSky
   STOCKHOLM_LOVER: 'stockholmLover',
+  SNAKE_BITES_TAIL: 'snakeBitesTail',        // ⑤ 咬自己尾巴的蛇
+  SUSPENDED: 'suspended',                     // ⑥ 搁置
   ETERNAL_FRIENDSHIP: 'eternalFriendship',
 };
 
@@ -29,8 +31,7 @@ export const ATMOSPHERE_THRESHOLDS = {
 
 // 抉择点触发条件
 export const DECISION_TRIGGERS = {
-  DOOR_KNOCK: 10,  // 发现 ≥10 件物品触发敲门声
-  MIRROR: 14,       // 发现 ≥14 件物品 + 前4个抉择完成 → 镜子揭示
+  DOOR_KNOCK: 18,  // 18件全找到触发敲门声
 };
 
 // 物品层级解锁阈值
