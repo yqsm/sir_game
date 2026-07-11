@@ -12,8 +12,16 @@ export default function EndingScreen() {
   const [displayedText, setDisplayedText] = useState('');
   const [paragraphIndex, setParagraphIndex] = useState(0);
   const ctrlRef = useRef(null);
+  const containerRef = useRef(null);
 
   const endingData = ENDING_TEXTS[ending];
+
+  // 自动滚动到底部
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
+    }
+  }, [displayedText, paragraphIndex]);
 
   // 标题打字机
   useEffect(() => {
@@ -105,7 +113,7 @@ export default function EndingScreen() {
   }
 
   return (
-    <div className="ending-screen" onClick={handleClick}>
+    <div className="ending-screen" ref={containerRef} onClick={handleClick}>
       <div className="ending-content">
         {stage === 'title' && (
           <div className="ending-title-text">
