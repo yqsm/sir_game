@@ -131,3 +131,69 @@
   color: var(--text-dim);
   letter-spacing: 4px;
 }
+
+.title-clear-btn {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  font-size: 12px;
+  font-family: var(--font-sans);
+  color: var(--text-secondary);
+  background: rgba(180, 70, 70, 0.1);
+  border: 1px solid rgba(180, 70, 70, 0.35);
+  padding: 6px 16px;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.title-clear-btn:hover {
+  background: rgba(180, 70, 70, 0.25);
+  border-color: rgba(180, 70, 70, 0.6);
+  color: #d48888;
+}
+
+.title-password-form {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.title-password-input {
+  background: rgba(0,0,0,0.4);
+  border: 1px solid rgba(196,164,90,0.3);
+  color: var(--accent-gold);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 2px;
+  outline: none;
+  width: 160px;
+}
+
+.title-password-btn {
+  background: rgba(196,164,90,0.1);
+  border: 1px solid rgba(196,164,90,0.3);
+  color: var(--accent-gold);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: 6px 16px;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.title-password-btn:hover {
+  background: rgba(196,164,90,0.2);
+}
+
+.title-password-error {
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  color: #aa5555;
+  font-family: var(--font-sans);
+  margin-top: 6px;
+}

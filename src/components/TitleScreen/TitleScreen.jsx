@@ -13,13 +13,46 @@ const ENDING_NAMES = [
   { id: 'suspended', name: '搁置' },
 ];
 
+const ALL_ENDINGS = [
+  'fenliRoad', 'noLoveInYourKilling', 'underVastSky',
+  'stockholmLover', 'snakeBitesTail', 'suspended',
+];
+
 export default function TitleScreen() {
   const { state, dispatch } = useGame();
   const [showEndings, setShowEndings] = useState(false);
+  const [titleClicks, setTitleClicks] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordInput, setPasswordInput] = useState('');
+  const [passwordError, setPasswordError] = useState(false);
+  const [unlocked, setUnlocked] = useState(false);
 
   const completedEndings = JSON.parse(
     localStorage.getItem(STORAGE_KEY) || '[]'
   );
+
+  const handleTitleClick = () => {
+    if (showPassword || unlocked) return;
+    const next = titleClicks + 1;
+    setTitleClicks(next);
+    if (next >= 5) {
+      setShowPassword(true);
+      setTitleClicks(0);
+    }
+  };
+
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+    if (passwordInput.trim() === '杨锦荣404') {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(ALL_ENDINGS));
+      setShowPassword(false);
+      setUnlocked(true);
+      window.location.reload();
+    } else {
+      setPasswordError(true);
+      setPasswordInput('');
+    }
+  };
   const allMainEndingsDone = [
     'fenliRoad', 'noLoveInYourKilling',
     'underVastSky', 'stockholmLover',
@@ -28,7 +61,7 @@ export default function TitleScreen() {
   return (
     <div className="title-screen">
       <div className="title-content">
-        <h1 className="title-main">他的办公室</h1>
+        <h1 className="title-main" onClick={handleTitleClick} style={{ cursor: 'pointer' }}>他的办公室</h1>
         <p className="title-sub">无间道同人 · 房间探索游戏</p>
         <button
           className="title-btn"
@@ -45,6 +78,21 @@ export default function TitleScreen() {
           >
             友谊地久天长？
           </button>
+        )}
+
+        {showPassword && (
+          <form onSubmit={handlePasswordSubmit} className="title-password-form">
+            <input
+              type="text"
+              value={passwordInput}
+              onChange={e => { setPasswordInput(e.target.value); setPasswordError(false); }}
+              placeholder="输入密码"
+              className="title-password-input"
+              autoFocus
+            />
+            <button type="submit" className="title-password-btn">确认</button>
+            {passwordError && <div className="title-password-error">密码错误</div>}
+          </form>
         )}
       </div>
 
@@ -90,6 +138,18 @@ export default function TitleScreen() {
             )}
           </div>
         </>
+      )}
+
+      {completedEndings.length > 0 && (
+        <button
+          className="title-clear-btn"
+          onClick={() => {
+            localStorage.clear();
+            window.location.reload();
+          }}
+        >
+          清除全部记录
+        </button>
       )}
     </div>
   );
