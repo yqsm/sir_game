@@ -76,6 +76,12 @@ export default function TitleScreen() {
                   <div
                     key={id}
                     className={`title-ending-item ${completedEndings.includes(id) ? 'unlocked' : 'locked'}`}
+                    onClick={() => {
+                      if (completedEndings.includes(id)) {
+                        dispatch({ type: ACTIONS.SET_ENDING, payload: id });
+                      }
+                    }}
+                    style={completedEndings.includes(id) ? { cursor: 'pointer' } : {}}
                   >
                     {completedEndings.includes(id) ? name : '？？？'}
                   </div>
